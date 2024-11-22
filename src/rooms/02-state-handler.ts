@@ -4,7 +4,6 @@ import { Schema, type, MapSchema } from "@colyseus/schema";
 export class Player extends Schema {
     @type("number")
     x = Math.floor(Math.random() * 400);
-
     @type("number")
     y = Math.floor(Math.random() * 400);
 }
@@ -18,12 +17,10 @@ export class State extends Schema {
     createPlayer(sessionId: string) {
         this.players.set(sessionId, new Player());
     }
-
     removePlayer(sessionId: string) {
         this.players.delete(sessionId);
     }
-
-    movePlayer (sessionId: string, movement: any) {
+    movePlayer(sessionId: string, movement: any) {
         if (movement.x) {
             this.players.get(sessionId).x += movement.x * 10;
 
@@ -35,12 +32,9 @@ export class State extends Schema {
 
 export class StateHandlerRoom extends Room<State> {
     maxClients = 4;
-
-    onCreate (options) {
+    onCreate(options) {
         console.log("StateHandlerRoom created!", options);
-
         this.setState(new State());
-
         this.onMessage("move", (client, data) => {
             console.log("StateHandlerRoom received message from", client.sessionId, ":", data);
             this.state.movePlayer(client.sessionId, data);
@@ -51,18 +45,18 @@ export class StateHandlerRoom extends Room<State> {
     //     return true;
     // }
 
-    onJoin (client: Client) {
+    onJoin(client: Client) {
         // client.send("hello", "world");
         console.log(client.sessionId, "joined!");
         this.state.createPlayer(client.sessionId);
     }
 
-    onLeave (client) {
+    onLeave(client) {
         console.log(client.sessionId, "left!");
         this.state.removePlayer(client.sessionId);
     }
 
-    onDispose () {
+    onDispose() {
         console.log("Dispose StateHandlerRoom");
     }
 
