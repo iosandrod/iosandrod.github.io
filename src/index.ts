@@ -8,10 +8,23 @@
  *
  * See: https://docs.colyseus.io/server/api/#constructor-options
  */
-import { listen } from "@colyseus/tools";
+// import { listen } from "@colyseus/tools";
+// // Import arena config
+// import appConfig from "./app.config";
+// // Create and listen on 2567 (or PORT environment variable.)
+import { createServer } from 'http'
+import { Server, } from "colyseus";
+import express from "express";
 
-// Import arena config
-import appConfig from "./app.config";
-
-// Create and listen on 2567 (or PORT environment variable.)
-listen(appConfig);
+// listen(appConfig);
+let server = new Server({
+    devMode: true,//
+})//
+const app = express();
+app.use('/test', async (req, res, next) => {//
+    res.send('test')//
+})
+server.attach({
+    server: createServer(app),
+})
+server.listen(2567);//

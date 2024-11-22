@@ -21,62 +21,37 @@ export default config({
     options: {
         devMode: true,
     },
-
     initializeGameServer: (gameServer) => {
-        // Define "lobby" room
-        gameServer.define("lobby", LobbyRoom);
-
-        // Define "relay" room
+        gameServer.define("lobby", LobbyRoom);//定义房间?//
         gameServer.define("relay", RelayRoom, { maxClients: 4 })
-            .enableRealtimeListing();
-
-        // Define "chat" room
+            .enableRealtimeListing();//
         gameServer.define("chat", ChatRoom)
             .enableRealtimeListing();
-
-        // Register ChatRoom with initial options, as "chat_with_options"
-        // onInit(options) will receive client join options + options registered here.
         gameServer.define("chat_with_options", ChatRoom, {
             custom_options: "you can use me on Room#onCreate"
         });
-
-        // Define "state_handler" room
         gameServer.define("state_handler", StateHandlerRoom)
             .enableRealtimeListing();
-
-        // Define "auth" room
         gameServer.define("auth", AuthRoom)
             .enableRealtimeListing();
-
-        // Define "reconnection" room
         gameServer.define("reconnection", ReconnectionRoom)
             .enableRealtimeListing();
-
-        // Define "custom_lobby" room
         gameServer.define("custom_lobby", CustomLobbyRoom);
-
-        gameServer.onShutdown(function(){
+        gameServer.onShutdown(function () {
             console.log(`game server is going down.`);
         });
-
-
     },
-
     initializeExpress: (app) => {
-        // (optional) auth module
         app.use(auth.prefix, auth.routes());
-
-        // (optional) client playground
         app.use('/playground', playground);
-
-        // (optional) web monitoring panel
         app.use('/colyseus', monitor());
-
-        app.use('/', serveIndex(path.join(__dirname, "static"), {'icons': true}))
+        app.use('/test', async (req, res, next) => {
+            await next()//
+            res.send('hello world')//
+        })
+        app.use('/', serveIndex(path.join(__dirname, "static"), { 'icons': true }))
         app.use('/', express.static(path.join(__dirname, "static")));
     },
-
-
     beforeListen: () => {
         /**
          * Before before gameServer.listen() is called.
