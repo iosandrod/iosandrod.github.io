@@ -16,7 +16,12 @@ import { StateHandlerRoom } from "./rooms/02-state-handler";
 import { AuthRoom } from "./rooms/03-auth";
 import { ReconnectionRoom } from './rooms/04-reconnection';
 import { CustomLobbyRoom } from './rooms/07-custom-lobby-room';
+import { Account } from "./erpClass/account";
 
+
+/*
+The returned metadata is not exactly the same as is available from the origin server, but is collected from a local or a third-party copy.
+*/
 export default config({
     options: {
         devMode: true,
@@ -26,7 +31,7 @@ export default config({
         gameServer.define("relay", RelayRoom, { maxClients: 4 })
             .enableRealtimeListing();//
         gameServer.define("chat", ChatRoom)
-            .enableRealtimeListing();
+        // .enableRealtimeListing();
         gameServer.define("chat_with_options", ChatRoom, {
             custom_options: "you can use me on Room#onCreate"
         });
@@ -40,6 +45,10 @@ export default config({
         gameServer.onShutdown(function () {
             console.log(`game server is going down.`);
         });
+        gameServer.define('account', Account, {
+
+        }).enableRealtimeListing()//
+        //
     },
     initializeExpress: (app) => {
         app.use(auth.prefix, auth.routes());

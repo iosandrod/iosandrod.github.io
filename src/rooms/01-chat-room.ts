@@ -6,13 +6,12 @@ export class ChatRoom extends Room {
     maxClients = 4;
 
     onCreate(options) {
-        console.log("ChatRoom created!", options);
-
+        console.log("ChatRoom created!", options);//
         this.onMessage("message", (client, message) => {
             console.log("ChatRoom received message from", client.sessionId, ":", message);
             this.broadcast("messages", `(${client.sessionId}) ${message}`);
         });
-    }//
+    }
     // onJoin (client) {
     //     this.broadcast("messages", `${ client.sessionId } joined.`);
     // }

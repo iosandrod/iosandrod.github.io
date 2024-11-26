@@ -2,7 +2,7 @@ import { Schema, type } from "@colyseus/schema";
 import { Client, LobbyRoom } from "colyseus";
 
 class LobbyState extends Schema {
-    @type("string") custom: string ;
+    @type("string") custom: string;
 }
 
 export class CustomLobbyRoom extends LobbyRoom {
@@ -14,9 +14,9 @@ export class CustomLobbyRoom extends LobbyRoom {
 
     onJoin(client: Client, options) {
         super.onJoin(client, options);
-        this.state.custom = client.sessionId;
-    }
-
+        // console.log(client, 'testClient')//
+        // console.log(client)
+    }//1
     onLeave(client) {
         super.onLeave(client);
     }

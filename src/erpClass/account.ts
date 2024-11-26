@@ -3,18 +3,28 @@
 */
 
 import { ExtractUserData, ExtractAuthData } from "@colyseus/core/build/Room";
+import { MapSchema } from "@colyseus/schema";
 import { Client, Room } from "colyseus";
 import { IncomingMessage } from "http";
 
 export class Account extends Room {//
-    onInit(options: any) {//
-        console.log(this.clients, 'testClients')//
-    }
+    maxClients: number = 3
+    players: MapSchema = new MapSchema()//
     onCreate(options: any): void | Promise<any> {
-        console.log(options, 'testOptions')//
+
     }
     async onAuth(client: Client<ExtractUserData<this["clients"]>, ExtractAuthData<this["clients"]>>, options: any, request?: IncomingMessage) {
-        console.log('onAuth')//
+        // console.log('onAuth')//
+        return true//
+    }
+    async onJoin(client: Client<ExtractUserData<this["clients"]>, ExtractAuthData<this["clients"]>>, options?: any, auth?: ExtractAuthData<this["clients"]>): Promise<any> {
+        return true//
+    }
+    async addPlayer(client) {
+
+    }
+    setState(newState: any): void {
+        console.log(this.state, 'testState')//
     }
 }
 //

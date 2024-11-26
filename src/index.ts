@@ -8,23 +8,52 @@
  *
  * See: https://docs.colyseus.io/server/api/#constructor-options
  */
-// import { listen } from "@colyseus/tools";
-// // Import arena config
-// import appConfig from "./app.config";
-// // Create and listen on 2567 (or PORT environment variable.)
-import { createServer } from 'http'
-import { Server, } from "colyseus";
-import express from "express";
+import { listen } from "@colyseus/tools";
 
-// listen(appConfig);
-let server = new Server({
-    devMode: true,//
-})//
-const app = express();
-app.use('/test', async (req, res, next) => {//
-    res.send('test')//
-})
-server.attach({
-    server: createServer(app),
-})
-server.listen(2567);//
+
+import { createServer } from 'http'
+import { Server, Room, Client, ClientArray, matchMaker } from "colyseus";
+import express from "express";
+import { Router } from 'express'
+// import { ChatRoom } from './rooms/01-chat-room';
+import { Account } from './erpClass/account';
+import { run } from "./clients";
+import appConfig from "./app.config";
+// listen(appConfig)//
+setTimeout(() => {
+    // run()//
+}, 1000);
+async function fn1() {
+    const r = Router()
+
+    // .enableRealtimeListing()//
+    r.post('/addRoom', (req, res) => {//
+        res.send('room is create')//
+    })//
+    r.get('/', (req, res) => {
+        res.send('testget')
+    })//
+    const app = express();
+    //
+    app.use(async (req, res, next) => {//
+        await next()//
+    })//
+    app.use('/', r)//
+    // server.attach({
+    //     server: createServer(app),//
+    // })//
+    let server = new Server({
+        // devMode: true,//
+        server: createServer(app),//
+    })//
+    await server.listen(2567)
+    //模拟创建账套//
+    //模拟登录//
+    await server.define(`account`, Account, {
+    }).enableRealtimeListing()//
+    await matchMaker.createRoom("account", {})//
+    setTimeout(async () => {//
+        await run()//
+    }, 100);//
+}////
+fn1()
